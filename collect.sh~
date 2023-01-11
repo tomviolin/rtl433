@@ -1,3 +1,3 @@
 #!/bin/bash
-rtl_433 -s 1000k -F json:data.json -M level -M noise -M time:utc -M protocol -M stats -Y autolevel
+rtl_433 -F json:data`date +%Y%m%s_%H%M%S`.json -M level -M noise -M time:utc -M protocol -M stats -Y autolevel
 

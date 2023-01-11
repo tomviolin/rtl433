@@ -11,29 +11,29 @@ import datetime
 from zoneinfo import ZoneInfo
 from datetime import datetime
 import matplotlib as mpl
-from pandasql import sqldf
-
+from glob2 import glob
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
-with open("data.json",'r') as f:
-    try:
-        lis = f.readlines()
-    except Exception as e:
-        print(f"while reading file 'data.json': {e}")
-        sys.exit(0)
-
-    for li in lis:
-        if li == "": 
-            print("read empty line.")
-            continue
+for fn in glob('data*.json'):
+    with open(fn,'r') as f:
         try:
-            ld = json.loads(li)
+            lis = f.readlines()
         except Exception as e:
-            print(f"exception while json.load line: {e}")
-            print(li)
-            continue
-        lld.append(ld)
+            print(f"while reading file 'data.json': {e}")
+            sys.exit(0)
+
+        for li in lis:
+            if li == "": 
+                print("read empty line.")
+                continue
+            try:
+                ld = json.loads(li)
+            except Exception as e:
+                print(f"exception while json.load line: {e}")
+                print(li)
+                continue
+            lld.append(ld)
 
 
 plt.close('all')
