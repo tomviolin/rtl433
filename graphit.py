@@ -38,6 +38,10 @@ for fn in glob('data*.json'):
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
+
+
+
+
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 fig,(ax0,ax1,ax2) = plt.subplots(3)
