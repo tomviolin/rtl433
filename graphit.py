@@ -11,6 +11,7 @@ import datetime
 from zoneinfo import ZoneInfo
 from datetime import datetime
 import matplotlib as mpl
+from pandasql import sqldf
 
 mpl.rcParams['timezone']='America/Chicago'
 
@@ -37,6 +38,10 @@ with open("data.json",'r') as f:
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
+
+
+
+
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 fig,(ax0,ax1,ax2) = plt.subplots(3)

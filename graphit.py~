@@ -11,6 +11,7 @@ import datetime
 from zoneinfo import ZoneInfo
 from datetime import datetime
 import matplotlib as mpl
+from pandasql import sqldf
 
 mpl.rcParams['timezone']='America/Chicago'
 
@@ -37,6 +38,23 @@ with open("data.json",'r') as f:
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
+
+
+
+for col in pdf.columns:
+    print(f"{col}")
+    query = f"""
+    SELECT COUNT(*) FROM pdf
+    where {col} is not null;
+    """
+    try:
+        j = sqldf(query,globals())
+    except:
+        continue
+    print(j)
+
+gjgh
+
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 fig,(ax0,ax1,ax2) = plt.subplots(3)
@@ -46,8 +64,6 @@ ax0.plot(dates[filt_freq],(pdf.freq[filt_freq]-434)*100,'.--',label="freq")
 #ax0.xaxis.set_major_locator(DayLocator())
 ax0.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax0.legend()
-xlim=ax0.get_xlim()
-ax0.set_xlim(xlim[1]-0.25,xlim[1])
 xlim=ax0.get_xlim()
 # datetime.datetime.strftime( dateutil.parser.parse("2023-01-07 05:56:52"),"%a %H:%M")
 
