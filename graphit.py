@@ -44,35 +44,49 @@ pdf=pd.DataFrame(lld)
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
-fig,(ax0,ax1,ax2,ax3) = plt.subplots(4)
+fig,ax = plt.subplots(5)
 fig.set_size_inches(8,12)
+n=0
 filt_freq=np.where(np.logical_not(np.isnan(pdf.freq)))[0]
-ax0.plot(dates[filt_freq],(pdf.freq[filt_freq]-434)*100,'.--',label="freq")
+ax[n].plot(dates[filt_freq],(pdf.freq[filt_freq]-434)*100,'.--',label="freq")
 #ax0.xaxis.set_major_locator(DayLocator())
-ax0.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-ax0.legend()
-xlim=ax0.get_xlim()
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+ax[n].legend()
+xlim=ax[n].get_xlim()
 # datetime.datetime.strftime( dateutil.parser.parse("2023-01-07 05:56:52"),"%a %H:%M")
-
+n+=1
 filt_noise = np.logical_not( np.isnan(pdf.noise))
-ax1.plot(dates[filt_noise],pdf.noise[filt_noise],'.-',label="noise")
-ax1.plot(dates[filt_noise],pdf.rssi[filt_noise],'.-',label="signal")
-ax1.legend()
-ax1.set_xlim(xlim)
-ax1.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+ax[n].plot(dates[filt_noise],pdf.noise[filt_noise],'.-',label="noise")
+ax[n].plot(dates[filt_noise],pdf.rssi[filt_noise],'.-',label="signal")
+ax[n].legend()
+ax[n].set_xlim(xlim)
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
+n+=1
 filt_freq1 = np.logical_not(np.isnan(pdf.freq1))
-ax2.plot(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100,'.--',label="freq1")
-ax2.plot(dates[filt_freq1],(pdf.freq2[filt_freq1]-434)*100,'.--',label="freq2")
-ax2.fill_between(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100, (pdf.freq2[filt_freq1]-434)*100,alpha=0.2)
-ax2.legend()
-ax2.set_xlim(xlim)
-ax2.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-
+ax[n].plot(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100,'.--',label="freq1")
+ax[n].plot(dates[filt_freq1],(pdf.freq2[filt_freq1]-434)*100,'.--',label="freq2")
+ax[n].fill_between(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100, (pdf.freq2[filt_freq1]-434)*100,alpha=0.2)
+ax[n].legend()
+ax[n].set_xlim(xlim)
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+n+=1
 filt_tempC = np.logical_not(np.isnan(pdf.temperature_C))
-ax3.plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
-ax3.legend()
-ax3.set_xlim(xlim)
-ax3.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+ax[n].plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
+ax[n].legend()
+ax[n].set_xlim(xlim)
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+
+n+=1
+
+filt_truck = pdf.protocol==201
+ax[n].plot(dates[filt_truck],pdf.pressure_kPa[filt_truck],'.-',label="kPa")
+ax[n].legend()
+ax[n].set_xlim(xlim)
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+
+
+
+
 plt.show()
 
