@@ -44,8 +44,8 @@ pdf=pd.DataFrame(lld)
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
-fig,(ax0,ax1,ax2) = plt.subplots(3)
-fig.set_size_inches(8,8)
+fig,(ax0,ax1,ax2,ax3) = plt.subplots(4)
+fig.set_size_inches(8,12)
 filt_freq=np.where(np.logical_not(np.isnan(pdf.freq)))[0]
 ax0.plot(dates[filt_freq],(pdf.freq[filt_freq]-434)*100,'.--',label="freq")
 #ax0.xaxis.set_major_locator(DayLocator())
@@ -68,5 +68,11 @@ ax2.fill_between(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100, (pdf.freq2[f
 ax2.legend()
 ax2.set_xlim(xlim)
 ax2.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+
+filt_tempC = np.logical_not(np.isnan(pdf.temperature_C))
+ax3.plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
+ax3.legend()
+ax3.set_xlim(xlim)
+ax3.xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 plt.show()
 
