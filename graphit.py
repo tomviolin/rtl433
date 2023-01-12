@@ -80,10 +80,10 @@ ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 n+=1
 
 filt_truck = pdf.protocol==201
-ax[n].plot(dates[filt_truck],pdf.pressure_kPa[filt_truck],'.-',label="kPa")
-ax[n].legend()
-ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+ax[n].hist(pdf.rssi,10)
+#ax[n].legend()
+#ax[n].set_xlim(xlim)
+#ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
 
 
