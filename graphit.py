@@ -46,6 +46,7 @@ pdf=pd.DataFrame(lld)
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 fig,ax = plt.subplots(5)
 fig.set_size_inches(8,12)
+fig.set_dpi(100)
 n=0
 filt_freq=np.where(np.logical_not(np.isnan(pdf.freq)))[0]
 ax[n].plot(dates[filt_freq],(pdf.freq[filt_freq]-434)*100,'.--',label="freq")
@@ -64,8 +65,8 @@ ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
 n+=1
 filt_freq1 = np.logical_not(np.isnan(pdf.freq1))
-ax[n].plot(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100,'.--',label="freq1")
-ax[n].plot(dates[filt_freq1],(pdf.freq2[filt_freq1]-434)*100,'.--',label="freq2")
+ax[n].plot(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100,'.--',label="freq1",lw=1)
+ax[n].plot(dates[filt_freq1],(pdf.freq2[filt_freq1]-434)*100,'.--',label="freq2",lw=1)
 ax[n].fill_between(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100, (pdf.freq2[filt_freq1]-434)*100,alpha=0.2)
 ax[n].legend()
 ax[n].set_xlim(xlim)
