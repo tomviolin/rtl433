@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import dateutil.parser
+from pandasql import sqldf
 import datetime
 from matplotlib.dates import DateFormatter, DayLocator
 from matplotlib.ticker import Formatter
