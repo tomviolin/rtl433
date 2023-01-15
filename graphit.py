@@ -1,4 +1,4 @@
-import io,sys
+import io,sys,os
 import json
 import matplotlib.pyplot as plt
 import numpy as np
@@ -62,6 +62,7 @@ n+=1
 filt_noise = np.logical_not( np.isnan(pdf.noise))
 ax[n].plot(dates[filt_noise],pdf.noise[filt_noise],'.-',label="noise")
 ax[n].plot(dates[filt_noise],pdf.rssi[filt_noise],'.-',label="signal")
+ax[n].plot(dates[filt_noise],pdf.rssi[filt_noise]-pdf.noise[filt_noise],'.-',label="SNR")
 ax[n].legend()
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
@@ -90,6 +91,6 @@ ax[n].hist(pdf.rssi,10)
 #ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
 
-
-plt.show()
+plt.savefig("chart.png")
+os.system("eom chart.png")
 
