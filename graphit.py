@@ -85,7 +85,7 @@ ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 n+=1
 
 filt_truck = pdf.protocol==201
-ax[n].hist(pdf.freq-434,50)
+ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
 #ax[n].legend()
 #ax[n].set_xlim(xlim)
 #ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
