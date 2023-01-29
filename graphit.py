@@ -92,6 +92,6 @@ ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
 #ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
 
-plt.savefig("chart.png")
-os.system("eom chart.png")
+plt.savefig(f"chart{datetime.now().strftime("%Y%M%D-%H%m%s")}.png")
+os.system(f"eom chart{datetime.now().strftime("%Y%M%D-%H%m%s")}.png")
 
