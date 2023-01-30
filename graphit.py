@@ -77,7 +77,7 @@ ax[n].legend(loc='upper left')
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 n+=1
-filt_tempC = np.logical_not(np.isnan(pdf.temperature_C))
+filt_tempC = np.logical_and(np.logical_not(np.isnan(pdf.temperature_C)),pdf.temperature_C < 80)
 ax[n].plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
 ax[n].legend()
 ax[n].set_xlim(xlim)
@@ -91,7 +91,7 @@ ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
 #ax[n].set_xlim(xlim)
 #ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
-
-plt.savefig(f"chart{datetime.now().strftime('%Y%m%d_%H%M%S')}.png")
-os.system(f"eom chart{datetime.now().strftime('%Y%m%d_%H%M%S')}.png")
+tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+plt.savefig(f"chart{tstamp}.png")
+os.system(f"eom chart{tstamp}.png")
 
