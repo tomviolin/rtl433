@@ -40,7 +40,7 @@ for fn in glob('data*.json'):
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
-pd.to_csv(
+#pd.to_csv(
 mpl.rcParams['lines.linewidth']=0.3
 mpl.rcParams['lines.markersize']=1
 
@@ -85,7 +85,7 @@ ax[n].plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C"
 ax[n].legend()
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-
+'''
 n+=1
 
 filt_truck = pdf.protocol==201
@@ -93,6 +93,9 @@ ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
 #ax[n].legend()
 #ax[n].set_xlim(xlim)
 #ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+'''
+
+
 
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"chart{tstamp}.png")
