@@ -40,7 +40,7 @@ for fn in glob('data*.json'):
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
-
+pd.to_csv(
 mpl.rcParams['lines.linewidth']=0.3
 mpl.rcParams['lines.markersize']=1
 
@@ -68,6 +68,7 @@ ax[n].legend()
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 
+'''
 n+=1
 filt_freq1 = np.logical_not(np.isnan(pdf.freq1))
 ax[n].plot(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100,'.--',label="freq1")
@@ -76,6 +77,8 @@ ax[n].fill_between(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100, (pdf.freq2
 ax[n].legend(loc='upper left')
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+'''
+
 n+=1
 filt_tempC = np.logical_and(np.logical_not(np.isnan(pdf.temperature_C)),pdf.temperature_C < 80)
 ax[n].plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
