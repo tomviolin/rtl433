@@ -49,14 +49,15 @@ pdf['newid'] = [str(x) for x in pdf.id]
 
 ids = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by avg_rssi")
 
-plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-1]}'"))
-plt.show()
-plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-2]}'"))
-plt.show()
-plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-3]}'"))
-plt.show()
+#plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-1]}'"))
+#plt.show()
+#plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-2]}'"))
+#plt.show()
+#plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-3]}'"))
+#plt.show()
 
 pdf=pdf[pdf.newid == list(ids.newid)[-1]]
+
 
 mpl.rcParams['lines.linewidth']=0.3
 mpl.rcParams['lines.markersize']=1
@@ -64,18 +65,20 @@ mpl.rcParams['lines.markersize']=1
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
-fig,ax = plt.subplots(5)
+fig,ax = plt.subplots(2,figsize=(14,8))
 fig.tight_layout()
 fig.set_size_inches(8,12)
 fig.set_dpi(100)
+cons=np.diff(pdf.Consumption)/np.float32(np.diff(dates))
+dates=dates[1:]
 n=0
-filt_freq=np.where(np.logical_not(np.isnan(pdf.freq)))[0]
-ax[n].plot(dates[filt_freq],(pdf.freq[filt_freq]-434)*100,'.--',label="freq")
-#ax0.xaxis.set_major_locator(DayLocator())
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+
+ax[n].plot(dates,cons,'.-',label="Consumption rate")
 ax[n].legend()
-xlim=ax[n].get_xlim()
-# datetime.datetime.strftime( dateutil.parser.parse("2023-01-07 05:56:52"),"%a %H:%M")
+#ax[n].set_xlim(xlim)
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+
+'''
 n+=1
 filt_noise = np.logical_not( np.isnan(pdf.noise))
 ax[n].plot(dates[filt_noise],pdf.noise[filt_noise],'.-',label="noise")
@@ -84,7 +87,7 @@ ax[n].plot(dates[filt_noise],pdf.rssi[filt_noise]-pdf.noise[filt_noise],'.-',lab
 ax[n].legend()
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-
+'''
 '''
 n+=1
 filt_freq1 = np.logical_not(np.isnan(pdf.freq1))
@@ -95,13 +98,14 @@ ax[n].legend(loc='upper left')
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 '''
-
+'''
 n+=1
 filt_tempC = np.logical_and(np.logical_not(np.isnan(pdf.temperature_C)),pdf.temperature_C < 80)
 ax[n].plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
 ax[n].legend()
 ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+'''
 '''
 n+=1
 
@@ -116,5 +120,5 @@ ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
 
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"chart{tstamp}.png")
-os.system(f"eom chart{tstamp}.png")
+print(f"eom chart{tstamp}.png")
 
