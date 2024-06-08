@@ -14,6 +14,9 @@ from zoneinfo import ZoneInfo
 from datetime import datetime
 import matplotlib as mpl
 from glob2 import glob
+
+from scipy.signal import savgol_filter
+
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
@@ -56,11 +59,28 @@ mpl.rcParams['lines.markersize']=1
 
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
-dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
-datenums = np.uint64(dates)
-regdates = np.arange(datenums.min(),datenums.max(), 30*60)
-regy = np.interp(regdates, datenums, pdf.Consumption)
 
+# raw data dates
+dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
+
+# raw dates converted to numbers
+datenums = np.uint64(dates)
+
+# regular spaced dates
+regdates = np.arange(datenums.min(),datenums.max(), 30*60)
+
+# consumption interpolated onto regular spaced dates
+
+scomp = savgol_filter(pdf.Consumption, 21, 1)
+
+
+regy = np.interp(regdates, datenums, scomp)
+
+
+# diff of consumption == consumption rate per regular spacing interval
+regcr = np.diff(regy)
+
+# regular spaced date numbers converted back to dates
 regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 
 
@@ -68,11 +88,9 @@ fig,ax = plt.subplots(2,figsize=(14,8))
 fig.tight_layout()
 fig.set_size_inches(8,12)
 fig.set_dpi(100)
-cons=np.diff(pdf.Consumption) 
-#dates=dates[1:]
 n=0
 
-ax[n].plot(regdatedates[:-1],cons,'.-',label="Consumption rate")
+ax[n].plot(regdatedates[:-1],regcr,'.-',label="Consumption rate")
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
