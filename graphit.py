@@ -47,10 +47,17 @@ goodid=np.logical_and(np.logical_not(pd.isna(pdf.id)), np.logical_not(pd.isna(pd
 pdf = pdf[goodid]
 pdf['newid'] = [str(x) for x in pdf.id]
 
-fdsa
+ids = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by avg_rssi")
 
+plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-1]}'"))
+plt.show()
+plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-2]}'"))
+plt.show()
+plt.hist(sqldf(f"select rssi from pdf where newid='{list(ids.newid)[-3]}'"))
+plt.show()
 
-#pd.to_csv(
+pdf=pdf[pdf.newid == list(ids.newid)[-1]]
+
 mpl.rcParams['lines.linewidth']=0.3
 mpl.rcParams['lines.markersize']=1
 
