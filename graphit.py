@@ -61,9 +61,7 @@ datenums = np.uint64(dates)
 regdates = np.arange(datenums.min(),datenums.max(), 30*60)
 regy = np.interp(regdates, datenums, pdf.Consumption)
 
-regdatedates = np.datetime64(regdates)
-
-
+regdatedates = pd.to_datetime(datenums,unit='s',utc=True)
 
 
 fig,ax = plt.subplots(2,figsize=(14,8))
