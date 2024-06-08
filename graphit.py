@@ -69,7 +69,7 @@ fig,ax = plt.subplots(2,figsize=(14,8))
 fig.tight_layout()
 fig.set_size_inches(8,12)
 fig.set_dpi(100)
-cons=np.diff(pdf.Consumption)/np.float32(np.diff(dates))
+cons=np.diff(pdf.Consumption) #/np.float32(np.diff(dates))
 dates=dates[1:]
 n=0
 
