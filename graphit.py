@@ -41,8 +41,14 @@ for fn in glob('data*.json'):
 plt.close('all')
 pdf=pd.DataFrame(lld)
 
+# filter only records that have valid 'id' field (not Nan)
 ids=pdf.id
-ffa
+goodid=np.logical_and(np.logical_not(pd.isna(ids)), np.logical_not(pd.isna(pdf.Consumption)))
+
+pdf = pdf[goodid]
+
+fdsa
+
 
 #pd.to_csv(
 mpl.rcParams['lines.linewidth']=0.3
