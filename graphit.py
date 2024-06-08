@@ -40,6 +40,10 @@ for fn in glob('data*.json'):
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
+
+ids=pdf.id
+ffa
+
 #pd.to_csv(
 mpl.rcParams['lines.linewidth']=0.3
 mpl.rcParams['lines.markersize']=1
