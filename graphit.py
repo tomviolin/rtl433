@@ -58,8 +58,11 @@ mpl.rcParams['lines.markersize']=1
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 datenums = np.uint64(dates)
-
+regdates = np.arange(datenums.min(),datenums.max(), 30*60)
 regy = np.interp(regdates, datenums, pdf.Consumption)
+
+regdatedates = np.datetime64(regdates)
+
 
 
 
@@ -67,11 +70,11 @@ fig,ax = plt.subplots(2,figsize=(14,8))
 fig.tight_layout()
 fig.set_size_inches(8,12)
 fig.set_dpi(100)
-cons=np.diff(pdf.Consumption) #/np.float32(np.diff(dates))
-dates=dates[1:]
+cons=np.diff(pdf.Consumption) 
+#dates=dates[1:]
 n=0
 
-ax[n].plot(dates,cons,'.-',label="Consumption rate")
+ax[n].plot(regdatedates[:-1],regy,'.-',label="Consumption rate")
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
