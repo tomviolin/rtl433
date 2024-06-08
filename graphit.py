@@ -59,6 +59,10 @@ mpl.rcParams['lines.markersize']=1
 dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 datenums = np.uint64(dates)
 
+regy = np.interp(regdates, datenums, pdf.Consumption)
+
+
+
 fig,ax = plt.subplots(2,figsize=(14,8))
 fig.tight_layout()
 fig.set_size_inches(8,12)
