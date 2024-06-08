@@ -61,7 +61,7 @@ datenums = np.uint64(dates)
 regdates = np.arange(datenums.min(),datenums.max(), 30*60)
 regy = np.interp(regdates, datenums, pdf.Consumption)
 
-regdatedates = pd.to_datetime(datenums,unit='s',utc=True)
+regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 
 
 fig,ax = plt.subplots(2,figsize=(14,8))
@@ -72,7 +72,7 @@ cons=np.diff(pdf.Consumption)
 #dates=dates[1:]
 n=0
 
-ax[n].plot(regdatedates[:-1],regy,'.-',label="Consumption rate")
+ax[n].plot(regdatedates[:-1],cons,'.-',label="Consumption rate")
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
