@@ -66,13 +66,13 @@ dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 # raw dates converted to numbers
 datenums = np.uint64(dates)
 
+
+# consumption smoothed, then interpolated onto regular spaced dates
+
+scomp = savgol_filter(pdf.Consumption, 41, 1)
+
 # regular spaced dates
 regdates = np.arange(datenums.min(),datenums.max(), 30*60)
-
-# consumption interpolated onto regular spaced dates
-
-scomp = savgol_filter(pdf.Consumption, 21, 1)
-
 
 regy = np.interp(regdates, datenums, scomp)
 
