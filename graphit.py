@@ -42,10 +42,10 @@ plt.close('all')
 pdf=pd.DataFrame(lld)
 
 # filter only records that have valid 'id' field (not Nan)
-ids=pdf.id
-goodid=np.logical_and(np.logical_not(pd.isna(ids)), np.logical_not(pd.isna(pdf.Consumption)))
-
+#ids=pdf.id
+goodid=np.logical_and(np.logical_not(pd.isna(pdf.id)), np.logical_not(pd.isna(pdf.Consumption)))
 pdf = pdf[goodid]
+pdf['newid'] = [str(x) for x in pdf.id]
 
 fdsa
 
