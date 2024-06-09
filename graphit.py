@@ -159,24 +159,26 @@ for di in range(1,len(regdates)):
         # make new rectangle from lastedge to here
         if thisedgefmt[3:]=='00':
             spancolor='#eeeeee'
+            lbl = "PM"
         else:
             spancolor='#ffffff'
+            lbl = "AM"
         print(f"left={lastedgenum},right={thisedgenum},color={spancolor}")
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        plt.text(lastedgenum_
+        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.95, DateFormatter('%a')(lastedgenum)+" "+lbl,ha='center')
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
 #ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+ax[n].xaxis.set_major_formatter(DateFormatter('%H:%M'))
 ax[n].set_title('smoothed consumption rate')
 ticklist = list(minimadatenums/86400)
 ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
 ax[n].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
-        ax[n].axvline(minimadates[i],c='#654321')
-        ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
+        ax[n].axvline(minimadates[i],c='#65432150')
+        #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
         ax[n].axvline(regdates[i]/86400,c='#654321')
@@ -190,7 +192,8 @@ for i in range(len(minimaraw)+1):
         lefti  = minimaraw[i-1]
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
-    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.9,f"{val:.2f}", ha='center')
+    val = val * 7.48
+    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.5,f"{val:.2f}\ngallons", ha='center')
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
