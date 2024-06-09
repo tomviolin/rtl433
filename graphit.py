@@ -74,13 +74,18 @@ comp=pdf.Consumption+0
 #find all the places where the meter reading has increased since the last reading
 atchange = np.where(np.diff(comp)>0)[0]+1
 
+# the new value at the time of change is the closest to reality that we can possibly get.
 
+acdates = datenums[atchange]
+accons  = np.array(comp)[atchange]
 
-# regular spaced dates 2/minute
-regdates_coarse = np.arange(datenums.min(),datenums.max(), 30*60)
-
+# compute interpolation function
 yyy = CubicHermiteSpline(datenums,comp,comp*0)
 
+# regular spaced dates 2/minute
+regdates = np.arange(datenums.min(),datenums.max(), 30)
+
+# compute interpolation at regular datetime intervals
 sregy = yyy(regdates)
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
