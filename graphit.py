@@ -164,7 +164,7 @@ for i in range(len(minimaraw)+1):
         lefti  = minimaraw[i-1]
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
-    plt.text(regdatedates[lefti],regcr.max()*0.9,f"{val:.2f}")
+    plt.text(regdatedates[lefti],regcr.max()*0.9,f"  {val:.2f}")
 
 '''
 n+=1
