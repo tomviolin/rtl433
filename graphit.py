@@ -107,7 +107,7 @@ regcr = np.diff(sregy)/(1/INT_PER_HR)
 # regular spaced date numbers converted back to dates
 regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 
-# find relative minima in attempt to identify water usage events
+# find relative minima to help identify likely water usage events
 #first smooth the curve
 smoothcr = savgol_filter(regcr,95,1)
 
@@ -165,7 +165,7 @@ for i in range(len(minimaraw)+1):
         lefti  = minimaraw[i-1]
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
-    plt.text(regdatedates[lefti],regcr.max()*0.9,f"  {val:.2f}")
+    plt.text(regdates[lefti]/86400,regcr.max()*0.9,f"  {val:.2f}")
 
 '''
 n+=1
