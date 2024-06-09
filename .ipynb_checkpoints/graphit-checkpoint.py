@@ -88,7 +88,7 @@ yyy = PchipInterpolator(acdates, accons)
 #yyy = Akima1DInterpolator(acdates, accons)
 
 # establish rounding interval in seconds
-SMOOTH_INT = 300
+SMOOTH_INT = 60*60
 # regular spaced dates 
 regdates = np.arange(datenums.min(),datenums.max(), SMOOTH_INT)
 
@@ -111,7 +111,7 @@ regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 diffcr = np.diff(regcr)
 diffcr1 = diffcr[1:]
 diffcr0 = diffcr[:-1]
-minimaraw = np.where((diffcr0<0) & (diffcr1>0))[0]
+minimaraw = np.where((diffcr0<0) & (diffcr1>0))[0]+1
 
 minimadates = regdatedates[minimaraw]
 minimacf = sregy[minimaraw]
