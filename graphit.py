@@ -117,7 +117,8 @@ diffcr0 = diffcr[:-1]
 minimaraw = np.where((diffcr0<0) & (diffcr1>0))[0]+1
 
 minimadates = regdatedates[minimaraw]
-minimacf = sregy[minimaraw]
+minimacf = regcr[minimaraw]
+
 
 fig,ax = plt.subplots(3,figsize=(14,11))
 fig.tight_layout()
@@ -152,6 +153,8 @@ for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
         ax[n].axvline(minimadates[i],c='#654321')
         ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
+
+    if i == len(minimaraw):
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
@@ -160,9 +163,8 @@ for i in range(len(minimaraw)+1):
     else:
         lefti  = minimaraw[i-1]
         righti = minimaraw[i]
-    
-    #val = sregy[righti]-sregy[lefti]
-    #plt.text((lefti+righti)/2np.max(regcr)*0.9
+    val = sregy[righti]-sregy[lefti]
+    plt.text(regdatedates[lefti],regcr.max()*0.9,f"{val:.2f}")
 
 '''
 n+=1
