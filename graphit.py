@@ -16,7 +16,7 @@ import matplotlib as mpl
 from glob2 import glob
 
 from scipy.signal import savgol_filter
-from scipy.interpolate import CubicHermiteSpline
+from scipy.interpolate import CubicHermiteSpline, Akima1DInterpolator, PchipInterpolator
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
@@ -80,13 +80,14 @@ acdates = datenums[atchange]
 accons  = np.array(comp)[atchange]
 
 # compute interpolation function
-yyy = CubicHermiteSpline(datenums,comp,comp*0)
+# yyy = CubicHermiteSpline(datenums,comp,comp*0)
+yyy = PchipInterpolator(acdates, accons*1000)
 
 # regular spaced dates 2/minute
 regdates = np.arange(datenums.min(),datenums.max(), 30)
 
 # compute interpolation at regular datetime intervals
-sregy = yyy(regdates)
+sregy = yyy(regdates)/1000
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
