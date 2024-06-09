@@ -93,7 +93,7 @@ regdates = np.arange(datenums.min(),datenums.max(), 30)
 # compute interpolation at regular datetime intervals
 sregy1 = yyy(regdates)
 sregy2 = np.interp(regdates,acdates,accons)
-sregy = (sregy1 + sregy2) / 2
+sregy = (sregy1*0.7 + sregy2*0.3)
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
