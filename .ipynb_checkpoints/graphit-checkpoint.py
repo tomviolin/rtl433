@@ -144,7 +144,6 @@ ax[n].set_title('regularized meter readings')
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
-ax[n].fill_between(regdatedates[:-1],regcr)
 
 leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
@@ -158,11 +157,12 @@ for di in range(1,len(regdates)):
     if lastedgefmt != thisedgefmt and thisedgefmt[3:] in ['00','12']:
         print(f"new rect!")
         # make new rectangle from lastedge to here
-        if thisedgefmt[3:]=='0':
-            spancolor='#999999'
+        if thisedgefmt[3:]=='00':
+            spancolor='#eeeeee'
         else:
             spancolor='#ffffff'
-        ax[n].axvspan(lastedgenum,thisedgenum,fc=spancolor,fill=True)
+        print(f"left={lastedgenum},right={thisedgenum},color={spancolor}")
+        ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
@@ -190,6 +190,9 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.9,f"{val:.2f}", ha='center')
+
+ax[n].fill_between(regdatedates[:-1],regcr)
+
 
 '''
 n+=1
