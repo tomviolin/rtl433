@@ -148,9 +148,21 @@ ax[n].legend()
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
 
-for i in range(len(minimaraw)):
-    ax[n].axvline(minimadates[i],c='#654321')
-
+for i in range(len(minimaraw)+1):
+    if i < len(minimaraw):
+        ax[n].axvline(minimadates[i],c='#654321')
+        ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
+        lefti = minimaraw[i-1]
+        righti = len(sregy)-1
+    elif i == 0:
+        lefti  = 0
+        righti = minimaraw[i]
+    else:
+        lefti  = minimaraw[i-1]
+        righti = minimaraw[i]
+    
+    #val = sregy[righti]-sregy[lefti]
+    #plt.text((lefti+righti)/2np.max(regcr)*0.9
 
 '''
 n+=1
