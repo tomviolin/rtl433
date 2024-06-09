@@ -144,9 +144,17 @@ ax[n].set_title('regularized meter readings')
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
-
 ax[n].fill_between(regdatedates[:-1],regcr)
-ax[n].legend()
+
+leftedge = regdates[0]/86400
+rightedge = regdates[-1]/86400
+lastedge = ""
+for di in range(len(regdates)):
+    edge = DateFormatter("%d %H")(regdates[di]/86400)
+    if lastedge != edge:
+        if lastedge == "":
+            # starting the first edge
+
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
