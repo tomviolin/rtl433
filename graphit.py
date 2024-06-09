@@ -121,10 +121,10 @@ minimadatenums = regdates[minimaraw]
 minimacf = regcr[minimaraw]
 
 
-fig,ax = plt.subplots(3,figsize=(14,11))
+fig,ax = plt.subplots(2,figsize=(11,8.5))
 fig.tight_layout()
-fig.set_size_inches(14,11)
-fig.set_dpi(100)
+fig.set_size_inches(11,8.5)
+fig.set_dpi(80)
 
 n=0
 ax[n].plot(dates,pdf.Consumption,'.',label="Meter readings")
@@ -134,6 +134,7 @@ ax[n].legend()
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('meter readings')
 
+'''
 n += 1
 #ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
 ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
@@ -141,6 +142,7 @@ ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('regularized meter readings')
+'''
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
@@ -245,6 +247,5 @@ ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
 
 
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-plt.savefig(f"chart{tstamp}.png")
-print(f"eom chart{tstamp}.png")
-
+plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
+os.rename(f'/var/www/html/waterusage/chart{tstamp}.png','/var/www/html/waterusage/waterusage.png')
