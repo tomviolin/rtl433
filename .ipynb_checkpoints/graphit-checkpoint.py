@@ -165,7 +165,7 @@ for di in range(1,len(regdates)):
             lbl = "AM"
         print(f"left={lastedgenum},right={thisedgenum},color={spancolor}")
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.95, DateFormatter('%a')(lastedgenum)+" "+lbl,ha='center')
+        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.95, DateFormatter('%a %m/%d')(lastedgenum)+"\n"+lbl,ha='center')
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
@@ -177,15 +177,15 @@ ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
 ax[n].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
-        ax[n].axvline(minimadates[i],c='#65432150')
+        ax[n].axvline(minimadates[i],0,0.2,c='#0000FF',linestyle='dashed')
         #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
-        ax[n].axvline(regdates[i]/86400,c='#654321')
+        ax[n].axvline(regdates[i]/86400,c='#0000FF', linestyle='dashed')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
-        ax[n].axvline(regdates[-1]/86400,c='#654321')
+        ax[n].axvline(regdates[-1]/86400,c='#0000FF', linestyle='dashed')
         lefti  = 0
         righti = minimaraw[i]
     else:
@@ -193,7 +193,7 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     val = val * 7.48
-    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.5,f"{val:.2f}\ngallons", ha='center')
+    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.2,f"{val:.2f}\ngallons", ha='center',color='#0000FF')
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
