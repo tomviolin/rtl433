@@ -76,7 +76,7 @@ regdates = np.arange(datenums.min(),datenums.max(), 60)
 
 regy = np.interp(regdates, datenums, comp)
 
-sregy = savgol_filter(regy, 120, 0)
+sregy = savgol_filter(regy, 15*60, 0)
 
 # diff of consumption == consumption rate per regular spacing interval
 regcr = np.diff(sregy)
@@ -85,9 +85,9 @@ regcr = np.diff(sregy)
 regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 
 
-fig,ax = plt.subplots(2,figsize=(14,8))
+fig,ax = plt.subplots(3,figsize=(14,11))
 fig.tight_layout()
-fig.set_size_inches(8,12)
+fig.set_size_inches(14,11)
 fig.set_dpi(100)
 
 n=0
@@ -96,6 +96,14 @@ ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('raw data: meter readings')
+
+n += 1
+ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
+ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
+ax[n].legend()
+#ax[n].set_xlim(xlim)
+ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+ax[n].set_title('regularized meter readings')
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'.-',label="Consumption rate")
