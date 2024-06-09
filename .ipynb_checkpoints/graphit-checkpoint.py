@@ -87,8 +87,10 @@ accons  = np.array(comp)[atchange]
 yyy = PchipInterpolator(acdates, accons)
 #yyy = Akima1DInterpolator(acdates, accons)
 
-# regular spaced dates 2/minute
-regdates = np.arange(datenums.min(),datenums.max(), 15)
+# establish rounding interval in seconds
+SMOOTH_INT = 60
+# regular spaced dates 
+regdates = np.arange(datenums.min(),datenums.max(), SMOOTH_INT)
 
 # compute interpolation at regular datetime intervals
 sregy1 = yyy(regdates)
@@ -98,8 +100,9 @@ sregy = (sregy1*0.7 + sregy2*0.3)
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
 
-# diff of consumption == consumption rate per regular spacing interval
-regcr = np.diff(sregy)/(1/1200)
+# diff of consumption == consumption rate of cf/hr
+INT_PER_HR = 60*60/SMOOTH_INT
+regcr = np.diff(sregy)/(1/SMOOTH_INT)
 
 # regular spaced date numbers converted back to dates
 regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
