@@ -16,7 +16,7 @@ import matplotlib as mpl
 from glob2 import glob
 
 from scipy.signal import savgol_filter
-
+from scipy.interpolate import CubicHermiteSpline
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
@@ -75,9 +75,6 @@ comp=pdf.Consumption+0
 regdates = np.arange(datenums.min(),datenums.max(), 5*60)
 
 regy = np.interp(regdates, datenums, comp)
-
-
-
 
 sregy = savgol_filter(regy, 60*60, 5, deriv=0, mode='interp' )
 
