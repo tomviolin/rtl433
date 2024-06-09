@@ -71,8 +71,13 @@ datenums = np.uint64(dates)
 
 comp=pdf.Consumption+0
 
+#find all the places where the meter reading has increased since the last reading
+atchange = np.where(np.diff(comp)>0)[0]+1
+
+
+
 # regular spaced dates 2/minute
-regdates_course = np.arange(datenums.min(),datenums.max(), 30*60)
+regdates_coarse = np.arange(datenums.min(),datenums.max(), 30*60)
 
 yyy = CubicHermiteSpline(datenums,comp,comp*0)
 
