@@ -117,6 +117,7 @@ diffcr0 = diffcr[:-1]
 minimaraw = np.where((diffcr0<0) & (diffcr1>0))[0]+1
 
 minimadates = regdatedates[minimaraw]
+minimadatenums = regdates[minimaraw]
 minimacf = regcr[minimaraw]
 
 
@@ -148,7 +149,7 @@ ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
-
+ax[n].xaxis.set_ticks(minimadatenums/86400);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
         ax[n].axvline(minimadates[i],c='#654321')
