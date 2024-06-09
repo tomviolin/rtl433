@@ -91,7 +91,7 @@ fig.set_size_inches(8,12)
 fig.set_dpi(100)
 
 n=0
-ax[n].plot(pdf.time,pdf.Consumption,'.-',label="Meter readings")
+ax[n].plot(dates,pdf.Consumption,'.-',label="Meter readings")
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
