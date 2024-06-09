@@ -148,12 +148,15 @@ ax[n].fill_between(regdatedates[:-1],regcr)
 
 leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
-lastedge = ""
-for di in range(len(regdates)):
+lastedgenum = regdates[0]/86400
+lastedge = DateFormatter("%d %H")(regdates[0]/86400)
+
+for di in range(1,len(regdates)):
     edge = DateFormatter("%d %H")(regdates[di]/86400)
-    if lastedge != edge:
-        if lastedge == "":
-            # starting the first edge
+    if lastedge != edge and edge[3:] in ['00','12']:
+        # make new rectangle from lastedge to here
+        thisedge = regdates[di]/86400
+        ax[n].add_pat
 
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
