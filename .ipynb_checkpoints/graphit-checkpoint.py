@@ -144,6 +144,7 @@ ax[n].set_title('regularized meter readings')
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
+ax[n].set_yscale('log')
 ax[n].fill_between(regdatedates[:-1],regcr)
 ax[n].legend()
 #ax[n].set_xlim(xlim)
@@ -158,9 +159,11 @@ for i in range(len(minimaraw)+1):
         ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
+        ax[n].axvline(regdates[i]/86400,c='#654321')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
+        ax[n].axvline(regdates[-1]/86400,c='#654321')
         lefti  = 0
         righti = minimaraw[i]
     else:
