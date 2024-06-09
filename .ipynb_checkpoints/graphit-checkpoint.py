@@ -121,9 +121,9 @@ minimadatenums = regdates[minimaraw]
 minimacf = regcr[minimaraw]
 
 
-fig,ax = plt.subplots(3,figsize=(14,11))
+fig,ax = plt.subplots(3,figsize=(11,8.5))
 fig.tight_layout()
-fig.set_size_inches(14,11)
+fig.set_size_inches(11,8.5)
 fig.set_dpi(100)
 
 n=0
@@ -134,6 +134,7 @@ ax[n].legend()
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('meter readings')
 
+'''
 n += 1
 #ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
 ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
@@ -141,6 +142,7 @@ ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('regularized meter readings')
+'''
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
@@ -150,9 +152,16 @@ rightedge = regdates[-1]/86400
 lastedgenum = regdates[0]/86400
 lastedgefmt = DateFormatter("%d %H")(lastedgenum)
 print(f"lef={lastedgefmt}")
-for di in range(1,len(regdates)):
-    thisedgenum = regdates[di]/86400
-    thisedgefmt = DateFormatter("%d %H")(thisedgenum)
+for di in range(1,len(regdates)+1):
+    if di == len(regdates):
+        if int(lastedgefmt[3:]) < 12:
+            thisedgefmt='xx 12'
+        else:
+            thisedgefmt='xx 00'
+        thisedgenum = regdates[-1]/86400
+    else:
+        thisedgenum = regdates[di]/86400
+        thisedgefmt = DateFormatter("%d %H")(thisedgenum)
     #print(f"thisedgefmt={thisedgefmt} hr={thisedgefmt[3:]}")
     if lastedgefmt != thisedgefmt and thisedgefmt[3:] in ['00','12']:
         print(f"new rect!")
@@ -181,11 +190,11 @@ for i in range(len(minimaraw)+1):
         #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
-        ax[n].axvline(regdates[i]/86400,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[i]/86400,0,0.2,c='#0000FF', linestyle='dashed')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
-        ax[n].axvline(regdates[-1]/86400,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[-1]/86400,0,0.2,c='#0000FF', linestyle='dashed')
         lefti  = 0
         righti = minimaraw[i]
     else:
