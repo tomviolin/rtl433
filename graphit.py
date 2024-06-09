@@ -72,13 +72,13 @@ datenums = np.uint64(dates)
 comp=pdf.Consumption+0
 
 # regular spaced dates 2/minute
-regdates = np.arange(datenums.min(),datenums.max(), 30)
+regdates_course = np.arange(datenums.min(),datenums.max(), 30*60)
 
 yyy = CubicHermiteSpline(datenums,comp,comp*0)
 
-regy = yyy(regdates)
+sregy = yyy(regdates)
 
-sregy = savgol_filter(regy, 60*60, 5, deriv=0, mode='interp' )
+#sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
 
 # diff of consumption == consumption rate per regular spacing interval
@@ -101,7 +101,7 @@ ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('raw data: meter readings')
 
 n += 1
-ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
+#ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
 ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
 ax[n].legend()
 #ax[n].set_xlim(xlim)
