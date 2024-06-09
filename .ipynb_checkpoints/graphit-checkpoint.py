@@ -74,6 +74,9 @@ comp=pdf.Consumption+0
 #find all the places where the meter reading has increased since the last reading
 atchange = np.where(np.diff(comp)>0)[0]+1
 
+if atchange[-1] < len(datenums)-1:
+    atchange = np.int32(list(atchange) + [(len(datenums)-1)])
+
 # the new value at the time of change is the closest to reality that we can possibly get.
 
 acdates = datenums[atchange]
@@ -81,15 +84,16 @@ accons  = np.array(comp)[atchange]
 
 # compute interpolation function
 # yyy = CubicHermiteSpline(datenums,comp,comp*0)
-#yyy = PchipInterpolator(acdates, accons)
-#yyy = Akima1DInterpolator(acdates, accons*1000)
+yyy = PchipInterpolator(acdates, accons)
+#yyy = Akima1DInterpolator(acdates, accons)
 
 # regular spaced dates 2/minute
 regdates = np.arange(datenums.min(),datenums.max(), 30)
 
 # compute interpolation at regular datetime intervals
-#sregy = yyy(regdates)/1000
-sregy = np.interp(regdates,acdates,accons)
+sregy1 = yyy(regdates)
+sregy2 = np.interp(regdates,acdates,accons)
+sregy = (sregy1 + sregy2) / 2
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
@@ -107,7 +111,7 @@ fig.set_size_inches(14,11)
 fig.set_dpi(100)
 
 n=0
-ax[n].plot(dates,pdf.Consumption,'.-',label="Meter readings")
+ax[n].plot(dates,pdf.Consumption,'.',label="Meter readings")
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
@@ -122,7 +126,8 @@ ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('regularized meter readings')
 
 n += 1
-ax[n].plot(regdatedates[:-1],regcr,'.-',label="Consumption rate")
+ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
+ax[n].fill_between(regdatedates[:-1],regcr)
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
