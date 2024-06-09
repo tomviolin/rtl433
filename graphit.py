@@ -109,21 +109,12 @@ regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 
 # find relative minima in attempt to identify water usage events
 diffcr = np.diff(regcr)
-
 diffcr1 = diffcr[1:]
 diffcr0 = diffcr[:-1]
+minimaraw = np.where(np.all([diffcr0<0,diffcr1>0]))[0]
 
-minimaraw = np.where(np.logical_and(diffcr0<0,diffcr1>=0))[0]
-
-minima = regdates[minimaraw]
-
+minimadates = regdatedates[minimaraw]
 minimacf = sregy[minimaraw]
-
-
-
-
-#minima back to dates
-
 
 fig,ax = plt.subplots(3,figsize=(14,11))
 fig.tight_layout()
@@ -154,8 +145,8 @@ ax[n].legend()
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
 
-for i in len(minima):
-    plt.plot(
+for i in range(len(minimaraw)):
+    ax[n].axvline(minimadates[i])
 
 
 '''
