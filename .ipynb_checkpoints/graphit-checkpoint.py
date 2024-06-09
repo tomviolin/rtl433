@@ -144,9 +144,24 @@ ax[n].set_title('regularized meter readings')
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
-ax[n].set_yscale('log')
 ax[n].fill_between(regdatedates[:-1],regcr)
-ax[n].legend()
+
+leftedge = regdates[0]/86400
+rightedge = regdates[-1]/86400
+lastedgenum = regdates[0]/86400
+lastedgefmt = DateFormatter("%d %H")(lastedgenum)
+
+for di in range(1,len(regdates)):
+    thisedgenum = regdates[di]/86400
+    thisedgefmt = DateFormatter("%d %H")(thisedgenum)
+    if lastedgefmt != thisedgefmt and thisedgefmt[3:] in ['00','12']:
+        # make new rectangle from lastedge to here
+        if thisedgefmt[3:]=='0':
+            spancolor='#999999'
+        else:
+            spancolor='#ffffff'
+        ax[n].axvspan(lastedgenum,thisedgenum,c=spancolor)
+
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
