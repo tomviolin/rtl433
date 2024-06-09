@@ -54,8 +54,8 @@ pdf['newid'] = [str(x) for x in pdf.id]
 ids = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by avg_rssi")
 pdf=pdf[pdf.newid == list(ids.newid)[-1]]
 
-mpl.rcParams['lines.linewidth']=0.3
-mpl.rcParams['lines.markersize']=1
+mpl.rcParams['lines.linewidth']=1
+mpl.rcParams['lines.markersize']=1.5
 
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
@@ -69,14 +69,14 @@ datenums = np.uint64(dates)
 
 # consumption smoothed, then interpolated onto regular spaced dates
 
-comp=pdf.Consumption
+comp=pdf.Consumption+0
 
 # regular spaced dates 1/minute
-regdates = np.arange(datenums.min(),datenums.max(), 60)
+regdates = np.arange(datenums.min(),datenums.max(), 5*60)
 
 regy = np.interp(regdates, datenums, comp)
 
-sregy = savgol_filter(regy, 15*60, 0)
+sregy = savgol_filter(regy, 3*60, 1, mode='interp' )
 
 # diff of consumption == consumption rate per regular spacing interval
 regcr = np.diff(sregy)
