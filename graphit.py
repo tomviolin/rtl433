@@ -150,17 +150,21 @@ leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
 lastedgenum = regdates[0]/86400
 lastedgefmt = DateFormatter("%d %H")(lastedgenum)
-
+print(f"lef={lastedgefmt}")
 for di in range(1,len(regdates)):
     thisedgenum = regdates[di]/86400
     thisedgefmt = DateFormatter("%d %H")(thisedgenum)
+    #print(f"thisedgefmt={thisedgefmt} hr={thisedgefmt[3:]}")
     if lastedgefmt != thisedgefmt and thisedgefmt[3:] in ['00','12']:
+        print(f"new rect!")
         # make new rectangle from lastedge to here
         if thisedgefmt[3:]=='0':
             spancolor='#999999'
         else:
             spancolor='#ffffff'
-        ax[n].axvspan(lastedgenum,thisedgenum,c=spancolor)
+        ax[n].axvspan(lastedgenum,thisedgenum,fc=spancolor,fill=True)
+        lastedgenum = thisedgenum
+        lastedgefmt = thisedgefmt
 
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
