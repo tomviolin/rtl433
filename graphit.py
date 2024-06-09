@@ -81,13 +81,15 @@ accons  = np.array(comp)[atchange]
 
 # compute interpolation function
 # yyy = CubicHermiteSpline(datenums,comp,comp*0)
-yyy = PchipInterpolator(acdates, accons*1000)
+#yyy = PchipInterpolator(acdates, accons)
+#yyy = Akima1DInterpolator(acdates, accons*1000)
 
 # regular spaced dates 2/minute
 regdates = np.arange(datenums.min(),datenums.max(), 30)
 
 # compute interpolation at regular datetime intervals
-sregy = yyy(regdates)/1000
+#sregy = yyy(regdates)/1000
+sregy = np.interp(regdates,acdates,accons)
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
