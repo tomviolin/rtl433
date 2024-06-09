@@ -112,10 +112,11 @@ fig.set_dpi(100)
 
 n=0
 ax[n].plot(dates,pdf.Consumption,'.',label="Meter readings")
+ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-ax[n].set_title('raw data: meter readings')
+ax[n].set_title('meter readings')
 
 n += 1
 #ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
