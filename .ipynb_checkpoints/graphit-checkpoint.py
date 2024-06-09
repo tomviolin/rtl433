@@ -16,7 +16,7 @@ import matplotlib as mpl
 from glob2 import glob
 
 from scipy.signal import savgol_filter
-
+from scipy.interpolate import CubicHermiteSpline
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
@@ -71,15 +71,15 @@ datenums = np.uint64(dates)
 
 comp=pdf.Consumption+0
 
-# regular spaced dates 1/minute
-regdates = np.arange(datenums.min(),datenums.max(), 5*60)
+# regular spaced dates 2/minute
+regdates = np.arange(datenums.min(),datenums.max(), 30)
 
-regy = np.interp(regdates, datenums, comp)
+yyy = CubicHermiteSpline(datenums,comp,comp*0)
 
-
-
+regy = yyy(regdates)
 
 sregy = savgol_filter(regy, 60*60, 5, deriv=0, mode='interp' )
+
 
 # diff of consumption == consumption rate per regular spacing interval
 regcr = np.diff(sregy)
