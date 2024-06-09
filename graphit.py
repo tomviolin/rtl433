@@ -149,7 +149,9 @@ ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
-ax[n].xaxis.set_ticks(minimadatenums/86400);
+ticklist = list(minimadatenums/86400)
+ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
+ax[n].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
         ax[n].axvline(minimadates[i],c='#654321')
@@ -165,7 +167,7 @@ for i in range(len(minimaraw)+1):
         lefti  = minimaraw[i-1]
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
-    plt.text(regdates[lefti]/86400,regcr.max()*0.9,f"  {val:.2f}")
+    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.9,f"{val:.2f}", ha='center')
 
 '''
 n+=1
