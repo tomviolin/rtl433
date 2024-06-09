@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/tomh/rtl433/venv/bin/python3
 import io,sys,os
 import json
 import matplotlib.pyplot as plt
@@ -151,7 +151,6 @@ leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
 lastedgenum = regdates[0]/86400
 lastedgefmt = DateFormatter("%d %H")(lastedgenum)
-print(f"lef={lastedgefmt}")
 for di in range(1,len(regdates)+1):
     if di == len(regdates):
         if int(lastedgefmt[3:]) < 12:
@@ -163,7 +162,6 @@ for di in range(1,len(regdates)+1):
         thisedgefmt = DateFormatter("%d %H")(thisedgenum)
     #print(f"thisedgefmt={thisedgefmt} hr={thisedgefmt[3:]}")
     if lastedgefmt != thisedgefmt and thisedgefmt[3:] in ['00','12']:
-        print(f"new rect!")
         # make new rectangle from lastedge to here
         if thisedgefmt[3:]=='00':
             spancolor='#eeeeee'
@@ -171,7 +169,6 @@ for di in range(1,len(regdates)+1):
         else:
             spancolor='#ffffff'
             lbl = "AM"
-        print(f"left={lastedgenum},right={thisedgenum},color={spancolor}")
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
         plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.95, DateFormatter('%a %m/%d')(lastedgenum)+"\n"+lbl,ha='center')
         lastedgenum = thisedgenum
