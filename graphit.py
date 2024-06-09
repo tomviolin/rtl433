@@ -99,7 +99,7 @@ sregy = (sregy1 + sregy2) / 2
 
 
 # diff of consumption == consumption rate per regular spacing interval
-regcr = np.diff(sregy)
+regcr = np.diff(sregy)/(1/120)
 
 # regular spaced date numbers converted back to dates
 regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
