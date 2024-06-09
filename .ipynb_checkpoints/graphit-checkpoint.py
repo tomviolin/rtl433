@@ -88,7 +88,7 @@ yyy = PchipInterpolator(acdates, accons)
 #yyy = Akima1DInterpolator(acdates, accons)
 
 # establish rounding interval in seconds
-SMOOTH_INT = 60*60
+SMOOTH_INT = 60
 # regular spaced dates 
 regdates = np.arange(datenums.min(),datenums.max(), SMOOTH_INT)
 
@@ -102,13 +102,16 @@ sregy = (sregy1*0.7 + sregy2*0.3)
 
 # diff of consumption == consumption rate of cf/hr
 INT_PER_HR = 60*60/SMOOTH_INT
-regcr = np.diff(sregy)/(1/SMOOTH_INT)
+regcr = np.diff(sregy)/(1/INT_PER_HR)
 
 # regular spaced date numbers converted back to dates
 regdatedates = pd.to_datetime(regdates,unit='s',utc=True)
 
 # find relative minima in attempt to identify water usage events
-diffcr = np.diff(regcr)
+#first smooth the curve
+smoothcr = savgol_filter(regcr,95,1)
+
+diffcr = np.diff(smoothcr)
 diffcr1 = diffcr[1:]
 diffcr0 = diffcr[:-1]
 minimaraw = np.where((diffcr0<0) & (diffcr1>0))[0]+1
@@ -146,7 +149,7 @@ ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('smoothed consumption rate')
 
 for i in range(len(minimaraw)):
-    ax[n].axvline(minimadates[i],c='yellow')
+    ax[n].axvline(minimadates[i],c='#654321')
 
 
 '''
