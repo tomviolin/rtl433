@@ -76,7 +76,10 @@ regdates = np.arange(datenums.min(),datenums.max(), 5*60)
 
 regy = np.interp(regdates, datenums, comp)
 
-sregy = savgol_filter(regy, 3*60, 1, mode='interp' )
+
+
+
+sregy = savgol_filter(regy, 60*60, 5, deriv=0, mode='interp' )
 
 # diff of consumption == consumption rate per regular spacing interval
 regcr = np.diff(sregy)
