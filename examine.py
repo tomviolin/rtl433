@@ -48,25 +48,25 @@ pdfraw=pd.DataFrame(lld)
 # filter only records that have valid 'freq' field (not Nan)
 #ids=pdf.id
 goodfreq=np.logical_not(pd.isna(pdfraw['freq']))
-pdfall = pdfraw[goodfreq]
+pdfall = pdfraw[goodfreq].copy()
 pdfall['newfreq'] = [str(x) for x in pdfall['freq']]
-
-print(pdf['freq'])
-print(pdf['rssi'])
+pdfall['newid'] = [str(x) for x in pdfall['id']]
 
 
 mpl.rcParams['lines.linewidth']=1
 mpl.rcParams['lines.markersize']=1.5
 
 # idenitfy the ID with the most data, that'd be us.
-idsdf = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by N desc")
+idsdf = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdfall group by newid order by N desc")
 
 for i in range(idsdf.shape[0]):
     pdf=pdfall[pdfall.newid == list(idsdf.newid)[i]]
     plt.scatter(pdf['freq'],pdf['rssi'],s=1, label=pdf['newid'])
-plt.savefig('blowme.png')
 
-gfhgf
+plt.legend()
+plt.savefig('examine.png')
+
+sys.exit()
 
 
 
