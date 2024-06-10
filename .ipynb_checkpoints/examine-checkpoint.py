@@ -20,7 +20,7 @@ from scipy.interpolate import CubicHermiteSpline, Akima1DInterpolator, PchipInte
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
-for fn in glob('data*.json'):
+for fn in sorted(glob('data*.json')):
     with open(fn,'r') as f:
         try:
             lis = f.readlines()
@@ -51,15 +51,18 @@ goodfreq=np.logical_not(pd.isna(pdfraw['freq']))
 pdfall = pdfraw[goodfreq].copy()
 pdfall['newfreq'] = [str(x) for x in pdfall['freq']]
 pdfall['newid'] = [str(x) for x in pdfall['id']]
-
+pdfall['recdate'] = np.array([ np.datetime64(ts) for ts in pdfall.time ])
 
 mpl.rcParams['lines.linewidth']=1
 mpl.rcParams['lines.markersize']=1.5
 
-# idenitfy the ID with the most data, that'd be us.
+# identify the ID with the most data, that'd be us.
 idsdf = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdfall group by newid order by N desc")
 
-plt.plot(pdfall['rssi'])
+# raw data dates
+
+
+plt.plot(pdfall['recdate'],pdfall['rssi'])
 plt.show()
 sys.exit()
 
@@ -77,8 +80,6 @@ sys.exit()
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 
-# raw data dates
-dates = np.array([ np.datetime64(ts) for ts in pdf.time ])
 
 # raw dates converted to numbers
 datenums = np.uint64(dates)
