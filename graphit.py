@@ -20,7 +20,7 @@ from scipy.interpolate import CubicHermiteSpline, Akima1DInterpolator, PchipInte
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
-for fn in glob('data*.json'):
+for fn in sorted(glob('data*.json')):
     with open(fn,'r') as f:
         try:
             lis = f.readlines()
