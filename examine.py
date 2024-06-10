@@ -59,6 +59,11 @@ mpl.rcParams['lines.markersize']=1.5
 # idenitfy the ID with the most data, that'd be us.
 idsdf = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdfall group by newid order by N desc")
 
+plt.plot(pdfall['rssi'])
+plt.show()
+sys.exit()
+
+
 for i in range(idsdf.shape[0]):
     pdf=pdfall[pdfall.newid == list(idsdf.newid)[i]]
     plt.scatter(pdf['freq'],pdf['rssi'],s=1, label=pdf['newid'])
