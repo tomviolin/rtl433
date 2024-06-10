@@ -42,28 +42,32 @@ for fn in glob('data*.json'):
 
 
 plt.close('all')
-pdf=pd.DataFrame(lld)
+pdfraw=pd.DataFrame(lld)
 
 
 # filter only records that have valid 'freq' field (not Nan)
 #ids=pdf.id
-goodfreq=np.logical_not(pd.isna(pdf['freq']))
-pdf = pdf[goodfreq]
-pdf['newfreq'] = [str(x) for x in pdf['freq']]
+goodfreq=np.logical_not(pd.isna(pdfraw['freq']))
+pdfall = pdfraw[goodfreq]
+pdfall['newfreq'] = [str(x) for x in pdfall['freq']]
 
 print(pdf['freq'])
 print(pdf['rssi'])
 
-plt.scatter(pdf['freq'],pdf['rssi'])
-plt.savefig('blowme.png')
-
-gfhgf
-# idenitfy the ID with the most data, that'd be us.
-ids = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by avg_rssi")
-pdf=pdf[pdf.newid == list(ids.newid)[-1]]
 
 mpl.rcParams['lines.linewidth']=1
 mpl.rcParams['lines.markersize']=1.5
+
+# idenitfy the ID with the most data, that'd be us.
+idsdf = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by N desc")
+
+for i in range(idsdf.shape[0]):
+    pdf=pdfall[pdfall.newid == list(idsdf.newid)[i]]
+    plt.scatter(pdf['freq'],pdf['rssi'],s=1, label=pdf['newid'])
+plt.savefig('blowme.png')
+
+gfhgf
+
 
 
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
