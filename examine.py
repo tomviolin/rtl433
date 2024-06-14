@@ -62,7 +62,7 @@ idsdf = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdfall group by n
 # raw data dates
 
 
-plt.plot(pdfall['recdate'],pdfall['rssi'])
+plt.plot(pdfall['freq'],pdfall['rssi'],'.')
 plt.show()
 sys.exit()
 
