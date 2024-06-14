@@ -191,15 +191,15 @@ ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
 ax[n].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
-        ax[n].axvline(minimadates[i],0,0.031,c='#0000FF',linestyle='dashed')
+        ax[n].axvline(minimadates[i],0,0.021,c='#0000FF',linestyle='dashed')
         #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
-        ax[n].axvline(regdates[i]/86400,0,0.031,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[i]/86400,0,0.021,c='#0000FF', linestyle='dashed')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
-        ax[n].axvline(regdates[-1]/86400,0,0.031,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[-1]/86400,0,0.021,c='#0000FF', linestyle='dashed')
         lefti  = 0
         righti = minimaraw[i]
     else:
@@ -207,13 +207,21 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     maxcr = regcr[lefti:righti].max()
+    avgcr = regcr[lefti:righti].mean()
     maxi = np.where(regcr[lefti:righti]==maxcr)[0]
     maxdate = regdates[lefti+maxi]/86400
+    middate = (regdates[lefti]+regdates[righti])/2/86400
+    if maxcr < avgcr*3:
+        plotdate = middate
+    else:
+        plotdate = maxdate
     val = val * 7.48
+    if maxcr < regcr.max()*0.02:
+        maxcr =regcr.max()*0.02
     plt.text(
             #(regdates[lefti]+regdates[righti])/2/86400,
-            maxdate,
-            maxcr,f"{val:.2f}", ha='center',va='bottom', color='#0000FF', fontsize=9)
+            plotdate,
+            maxcr,f"{val:.0f}", ha='center',va='bottom', color='#0000FF', fontsize=9)
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
