@@ -79,7 +79,7 @@ datenums = np.uint64(dates)
 
 # consumption smoothed, then interpolated onto regular spaced dates
 
-comp=pdf.Consumption+0
+comp=np.int32(pdf.Consumption)
 
 #find all the places where the meter reading has increased since the last reading
 atchange = np.where(np.diff(comp)>0)[0]+1
@@ -138,7 +138,7 @@ fig.set_dpi(80)
 
 n=0
 ax[n].plot(dates,pdf.Consumption,'.',label="Meter readings")
-ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
+ax[n].plot(regdatedates,sregy,'.-',label='smoothed meter readings',lw=1)
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
@@ -219,7 +219,7 @@ for i in range(len(minimaraw)+1):
     maxi = np.where(regcr[lefti:righti]==maxcr)[0]
     maxdate = regdates[lefti+maxi]/86400
     middate = (regdates[lefti]+regdates[righti])/2/86400
-    if maxcr < avgcr*3:
+    if maxcr < avgcr*2:
         plotdate = middate
     else:
         plotdate = maxdate
