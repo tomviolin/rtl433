@@ -1,0 +1,4 @@
+Protocols: Registered 1 out of 245 device decoding protocols [ 154 ]
+Input: Test mode active. Reading samples from file: csv:blah.csv
+sdr_callback: Sample buffer length not aligned to sample size!
+Auto Level: Estimated noise level is -17.9 dB, adjusting minimum detection level to -14.9 dB

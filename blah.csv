@@ -1,0 +1,7 @@
+time,msg,codes,protocol,mod,freq,freq1,freq2,rssi,snr,noise,model,id,ProtocolID,EndpointType,EndpointID,Consumption,Tamper,PacketCRC,MeterType,mic
+time,msg,codes,protocol,mod,freq,freq1,freq2,rssi,snr,noise,model,id,ProtocolID,EndpointType,EndpointID,Consumption,Tamper,PacketCRC,MeterType,mic
+time,msg,codes,protocol,mod,freq,freq1,freq2,rssi,snr,noise,model,id,ProtocolID,EndpointType,EndpointID,Consumption,Tamper,PacketCRC,MeterType,mic
+2024-06-14 10:07:55,,,154,ASK,915.600,,,-0.719,41.425,-42.144,SCMplus,71627342,0x1E,0xAB,71627342,70059,0x4800,0xE862,Water,CRC
+2024-06-14 10:08:24,,,154,ASK,915.282,,,-7.620,34.524,-42.144,SCMplus,71627342,0x1E,0xAB,71627342,70059,0x4800,0xE862,Water,CRC
+2024-06-14 10:08:54,,,154,ASK,915.686,,,-0.129,42.016,-42.144,SCMplus,71627342,0x1E,0xAB,71627342,70059,0x4800,0xE862,Water,CRC
+2024-06-14 10:10:54,,,154,ASK,915.694,,,-0.113,37.260,-37.373,SCMplus,71627342,0x1E,0xAB,71627342,70059,0x4800,0xE862,Water,CRC
