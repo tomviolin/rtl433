@@ -111,7 +111,7 @@ regdates = np.arange(datenums.min(),datenums.max(), SMOOTH_INT)
 # compute interpolation at regular datetime intervals
 sregy1 = yyy(regdates)
 sregy2 = np.interp(regdates,acdates,accons)
-sregy = (sregy1*0.1 + sregy2*0.9)
+sregy = (sregy1*0.5 + sregy2*0.5)
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
@@ -138,8 +138,8 @@ minimacf = regcr[minimaraw]
 
 
 fig,ax = plt.subplots(2,figsize=(14,8.5), height_ratios=[4,1])
-fig.tight_layout()
 fig.set_size_inches(14,8.5)
+fig.tight_layout()
 fig.set_dpi(80)
 
 n=1
@@ -239,6 +239,11 @@ for lbl in labels:
     lbl.set_va('center')
     lbl.set_ha('right')
     lbl.set_fontsize(8)
+
+yticks = ax[m].get_yticks()
+for ytick in yticks:
+    ax[m].axhline(ytick)
+print(yticks)
 
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
