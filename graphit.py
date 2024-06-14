@@ -150,10 +150,10 @@ ax[n].plot(acdates/60/60/24,accons,'.',ms=4, label='interpolation points', color
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 #ax[m].xaxis.set_major_formatter(DateFormatter('%a %Hh'
-ax[n].set_title('meter readings')
+ax[n].set_title('meter readings (cu ft)')
 
-ax[m].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
-ax[m].set_ylim(0,regcr.max()*1.3)
+ax[m].plot(regdatedates[:-1],regcr*7.48,'-',label="Consumption rate")
+ax[m].set_ylim(0,regcr.max()*1.3*7.48)
 leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
 lastedgenum = regdates[0]/86400
@@ -178,14 +178,14 @@ for di in range(1,len(regdates)+1):
             lbl = "AM"
         ax[m].axvspan(lastedgenum,thisedgenum,color=spancolor)
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        ax[m].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
-        ax[n].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
+        ax[m].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12*7.48, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
+        ax[n].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12*7.48, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
 #ax[m].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%H:%M'))
-ax[m].set_title('smoothed consumption rate')
+ax[m].set_title('consumption rate: smoothed & converted to gallons')
 ticklist = list(minimadatenums/86400)
 ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
 ax[n].xaxis.set_ticks(ticklist);
@@ -230,7 +230,7 @@ for i in range(len(minimaraw)+1):
             plotdate,
             maxcr,f"{val:.0f}", ha='center',va='bottom', color='#0000FF', fontsize=9)
 
-ax[m].fill_between(regdatedates[:-1],regcr)
+ax[m].fill_between(regdatedates[:-1],regcr*7.48)
 
 labels=ax[n].get_xticklabels()
 for lbl in labels:
