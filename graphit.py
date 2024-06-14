@@ -7,7 +7,7 @@ import pandas as pd
 import dateutil.parser
 from pandasql import sqldf
 import datetime
-from matplotlib.dates import DateFormatter, DayLocator
+from matplotlib.dates import DateFormatter, DayLocator, date2num
 from matplotlib.ticker import Formatter
 import datetime
 from zoneinfo import ZoneInfo
@@ -43,6 +43,13 @@ for fn in sorted(glob('data*.json')):
 
 plt.close('all')
 pdf=pd.DataFrame(lld)
+
+
+
+# select dates within 1 week
+
+
+
 
 # filter only records that have valid 'id' field (not Nan)
 #ids=pdf.id
@@ -199,7 +206,7 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     val = val * 7.48
-    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.5,f"{val:.2f}\ngallons", ha='center',va='top', color='#0000FF')
+    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.5,f"{val:.2f} gal", ha='center',va='top', color='#0000FF', rotation=60, rotation_mode='anchor')
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
