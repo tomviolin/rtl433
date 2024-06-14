@@ -194,16 +194,19 @@ ax[n].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
         ax[n].axvline(minimadates[i],0,0.021,c='#0000FF',linestyle='dashed')
+        ax[n].axvline(minimadates[i],0,1,c='#aaaaFF',linestyle='dashed')
         ax[n-1].axvline(minimadates[i],0,1,c='#0000FF',linestyle='dashed')
         #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
         ax[n].axvline(regdates[i]/86400,0,0.021,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[i]/86400,0,1,c='#aaaaFF', linestyle='dashed')
         ax[n-1].axvline(regdates[i]/86400,0,1,c='#0000FF', linestyle='dashed')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
         ax[n].axvline(regdates[-1]/86400,0,0.021,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[-1]/86400,0,1,c='#aaaaFF', linestyle='dashed')
         ax[n-1].axvline(regdates[-1]/86400,0,1,c='#0000FF', linestyle='dashed')
         lefti  = 0
         righti = minimaraw[i]
