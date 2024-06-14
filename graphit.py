@@ -93,9 +93,9 @@ acdates = datenums[atchange]
 accons  = np.array(comp)[atchange]
 
 # compute interpolation function
-# yyy = CubicHermiteSpline(datenums,comp,comp*0)
+#yyy = CubicHermiteSpline(datenums,comp,1)
 yyy = PchipInterpolator(acdates, accons)
-#yyy = Akima1DInterpolator(acdates, accons)
+#yyy = Akima1DInterpolator(acdates, accons, method='makima')
 
 # establish rounding interval in seconds
 SMOOTH_INT = 60
@@ -105,7 +105,7 @@ regdates = np.arange(datenums.min(),datenums.max(), SMOOTH_INT)
 # compute interpolation at regular datetime intervals
 sregy1 = yyy(regdates)
 sregy2 = np.interp(regdates,acdates,accons)
-sregy = (sregy1*0.7 + sregy2*0.3)
+sregy = (sregy1*0.9 + sregy2*0.1)
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
@@ -131,14 +131,15 @@ minimadatenums = regdates[minimaraw]
 minimacf = regcr[minimaraw]
 
 
-fig,ax = plt.subplots(2,figsize=(11,8.5))
+fig,ax = plt.subplots(2,figsize=(11,8.5), height_ratios=[1,3])
 fig.tight_layout()
 fig.set_size_inches(11,8.5)
 fig.set_dpi(80)
 
 n=0
 ax[n].plot(dates,pdf.Consumption,'.',label="Meter readings")
-ax[n].plot(regdatedates,sregy,'.-',label='smoothed meter readings',lw=1)
+ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
+ax[n].plot(acdates/60/60/24,accons,'.',ms=4, label='interpolation points', color='#FF5555')
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
