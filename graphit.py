@@ -45,17 +45,17 @@ for fn in sorted(glob('data*.json')):
 plt.close('all')
 pdf=pd.DataFrame(lld)
 
-pdf['datetimes'] = [ mpd.dateutil.parser.parse(x) for x in list(pdf['time']).timestamp() ]
+pdf['timestamp'] = [ mpd.dateutil.parser.parse(x).timestamp() for x in list(pdf['time']) ]
 
 # select dates within 1 week
 
-mostrecentdate =mpd.dateutil.parser.parse(list(pdf['time'])[-1])
+mostrecentdate =mpd.dateutil.parser.parse(list(pdf['time'])[-1]).timestamp()
 print(mostrecentdate)
 
 
 # filter only records that have valid 'id' field (not Nan)
 #ids=pdf.id
-goodid=np.logical_and(np.logical_not(pd.isna(pdf.id)), np.logical_not(pd.isna(pdf.Consumption)))
+goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] >= (mostrecentdate - 60*60*24*5))
 pdf = pdf[goodid]
 pdf['newid'] = [str(x) for x in pdf.id]
 
@@ -180,7 +180,7 @@ for di in range(1,len(regdates)+1):
             spancolor='#ffffff'
             lbl = "AM"
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.95, DateFormatter('%a %m/%d')(lastedgenum)+"\n"+lbl,ha='center')
+        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.90, DateFormatter('%a\n%m/%d')(lastedgenum)+"\n"+lbl,ha='right',rotation=-70)
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
@@ -208,7 +208,7 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     val = val * 7.48
-    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.5,f"{val:.2f} gal", ha='center',va='top', color='#0000FF', rotation=60, rotation_mode='anchor')
+    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.6,f"{val:.2f}", ha='right',va='top', color='#0000FF', rotation=-60, rotation_mode='default')
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
