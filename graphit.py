@@ -143,7 +143,6 @@ ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('meter readings')
-
 '''
 n += 1
 #ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
@@ -156,7 +155,7 @@ ax[n].set_title('regularized meter readings')
 
 n += 1
 ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
-
+ax[n].set_ylim(0,regcr.max()*1.5)
 leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
 lastedgenum = regdates[0]/86400
@@ -180,7 +179,7 @@ for di in range(1,len(regdates)+1):
             spancolor='#ffffff'
             lbl = "AM"
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.90, DateFormatter('%a\n%m/%d')(lastedgenum)+"\n"+lbl,ha='right',rotation=-70)
+        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*0.90, DateFormatter('%a\n%m/%d')(lastedgenum)+"\n"+lbl,ha='center')
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
@@ -208,10 +207,16 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     val = val * 7.48
-    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.6,f"{val:.2f}", ha='right',va='top', color='#0000FF', rotation=-60, rotation_mode='default')
+    plt.text((regdates[lefti]+regdates[righti])/2/86400,regcr.max()*0.6,f"{val:.2f}", ha='center',va='top', color='#0000FF', rotation=70, rotation_mode='anchor', fontsize=9)
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
+labels=ax[n].get_xticklabels()
+for lbl in labels:
+    lbl.set_rotation(70)
+    lbl.set_rotation_mode('anchor')
+    lbl.set_va('center')
+    lbl.set_fontsize(8)
 
 '''
 n+=1
