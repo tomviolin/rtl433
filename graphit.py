@@ -60,14 +60,15 @@ pdf = pdf[goodid]
 pdf['newid'] = [str(x) for x in pdf.id]
 
 # idenitfy the ID with the most data, that'd be us.
-ids = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by avg_rssi")
+ids = sqldf("select newid,count(*) N,avg(rssi) avg_rssi from pdf group by newid order by N")
 pdf=pdf[pdf.newid == list(ids.newid)[-1]]
 
 mpl.rcParams['lines.linewidth']=1
 mpl.rcParams['lines.markersize']=1.5
 
-
-
+plt.plot(pdf.freq,pdf.rssi,'.')
+plt.savefig('freq_vs_rssi.png')
+plt.close('all')
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 
 # raw data dates
@@ -137,13 +138,15 @@ minimadatenums = regdates[minimaraw]
 minimacf = regcr[minimaraw]
 
 
-fig,ax = plt.subplots(2,figsize=(14,8.5), height_ratios=[4,1])
+fig,ax = plt.subplots(2,figsize=(14,8.5), height_ratios=[3,1])
 fig.set_size_inches(14,8.5)
 fig.tight_layout()
 fig.set_dpi(80)
 
 n=1
 m=0
+ax[n].set_xlim(dates[0],dates[-1])
+ax[m].set_xlim(dates[0],dates[-1])
 ax[n].plot(dates,comp,'.',label="Meter readings")
 ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
 ax[n].plot(acdates/60/60/24,accons,'.',ms=4, label='interpolation points', color='#FF5555')
