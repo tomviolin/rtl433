@@ -111,7 +111,7 @@ regdates = np.arange(datenums.min(),datenums.max(), SMOOTH_INT)
 # compute interpolation at regular datetime intervals
 sregy1 = yyy(regdates)
 sregy2 = np.interp(regdates,acdates,accons)
-sregy = (sregy1*0.9 + sregy2*0.1)
+sregy = (sregy1*0.1 + sregy2*0.9)
 
 #sregy = savgol_filter(regy, 5, 1, deriv=0, mode='interp' )
 
@@ -137,19 +137,19 @@ minimadatenums = regdates[minimaraw]
 minimacf = regcr[minimaraw]
 
 
-fig,ax = plt.subplots(2,figsize=(11,8.5), height_ratios=[1,3])
+fig,ax = plt.subplots(2,figsize=(14,8.5), height_ratios=[4,1])
 fig.tight_layout()
-fig.set_size_inches(11,8.5)
+fig.set_size_inches(14,8.5)
 fig.set_dpi(80)
 
-n=0
-m=1
+n=1
+m=0
 ax[n].plot(dates,comp,'.',label="Meter readings")
 ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
 ax[n].plot(acdates/60/60/24,accons,'.',ms=4, label='interpolation points', color='#FF5555')
 ax[n].legend()
 #ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
+#ax[m].xaxis.set_major_formatter(DateFormatter('%a %Hh'
 ax[n].set_title('meter readings')
 
 ax[m].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
@@ -184,11 +184,12 @@ for di in range(1,len(regdates)+1):
         lastedgefmt = thisedgefmt
 
 #ax[m].set_xlim(xlim)
-ax[m].xaxis.set_major_formatter(DateFormatter('%H:%M'))
+ax[n].xaxis.set_major_formatter(DateFormatter('%H:%M'))
 ax[m].set_title('smoothed consumption rate')
 ticklist = list(minimadatenums/86400)
 ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
-ax[m].xaxis.set_ticks(ticklist);
+ax[n].xaxis.set_ticks(ticklist);
+ax[m].xaxis.set_ticks([])
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
         ax[m].axvline(minimadates[i],0,0.021,c='#0000FF',linestyle='dashed')
@@ -231,7 +232,7 @@ for i in range(len(minimaraw)+1):
 
 ax[m].fill_between(regdatedates[:-1],regcr)
 
-labels=ax[m].get_xticklabels()
+labels=ax[n].get_xticklabels()
 for lbl in labels:
     lbl.set_rotation(70)
     lbl.set_rotation_mode('anchor')
