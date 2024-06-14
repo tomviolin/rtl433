@@ -240,9 +240,9 @@ for lbl in labels:
     lbl.set_ha('right')
     lbl.set_fontsize(8)
 
-yticks = ax[m].get_yticks()
+yticks = ax[n].get_yticks()
 for ytick in yticks:
-    ax[m].axhline(ytick)
+    ax[n].axhline(ytick)
 print(yticks)
 
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
