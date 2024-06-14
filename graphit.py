@@ -7,8 +7,9 @@ import pandas as pd
 import dateutil.parser
 from pandasql import sqldf
 import datetime
-from matplotlib.dates import DateFormatter, DayLocator, date2num
+from matplotlib.dates import DateFormatter, DayLocator
 from matplotlib.ticker import Formatter
+import matplotlib.dates as mpd
 import datetime
 from zoneinfo import ZoneInfo
 from datetime import datetime
@@ -44,11 +45,12 @@ for fn in sorted(glob('data*.json')):
 plt.close('all')
 pdf=pd.DataFrame(lld)
 
-
+pdf['datetimes'] = [ mpd.dateutil.parser.parse(x) for x in list(pdf['time']).timestamp() ]
 
 # select dates within 1 week
 
-
+mostrecentdate =mpd.dateutil.parser.parse(list(pdf['time'])[-1])
+print(mostrecentdate)
 
 
 # filter only records that have valid 'id' field (not Nan)
