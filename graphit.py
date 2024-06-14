@@ -87,6 +87,12 @@ atchange = np.where(np.diff(comp)>0)[0]+1
 if atchange[-1] < len(datenums)-1:
     atchange = np.int32(list(atchange) + [(len(datenums)-1)])
 
+if atchange[0] > 0:
+    dates = dates[atchange[0]:]
+    datenums = datenums[atchange[0]:]
+    comp = comp[atchange[0]:]
+    atchange = atchange - atchange[0]
+
 # the new value at the time of change is the closest to reality that we can possibly get.
 
 acdates = datenums[atchange]
@@ -137,26 +143,17 @@ fig.set_size_inches(11,8.5)
 fig.set_dpi(80)
 
 n=0
-ax[n].plot(dates,pdf.Consumption,'.',label="Meter readings")
+m=1
+ax[n].plot(dates,comp,'.',label="Meter readings")
 ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
 ax[n].plot(acdates/60/60/24,accons,'.',ms=4, label='interpolation points', color='#FF5555')
 ax[n].legend()
 #ax[n].set_xlim(xlim)
 ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
 ax[n].set_title('meter readings')
-'''
-n += 1
-#ax[n].plot(regdatedates,regy,'-',label="regularized meter readings",lw=1)
-ax[n].plot(regdatedates,sregy,'-',label='smoothed meter readings',lw=1)
-ax[n].legend()
-#ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-ax[n].set_title('regularized meter readings')
-'''
 
-n += 1
-ax[n].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
-ax[n].set_ylim(0,regcr.max()*1.3)
+ax[m].plot(regdatedates[:-1],regcr,'-',label="Consumption rate")
+ax[m].set_ylim(0,regcr.max()*1.3)
 leftedge = regdates[0]/86400
 rightedge = regdates[-1]/86400
 lastedgenum = regdates[0]/86400
@@ -179,36 +176,36 @@ for di in range(1,len(regdates)+1):
         else:
             spancolor='#ffffff'
             lbl = "AM"
+        ax[m].axvspan(lastedgenum,thisedgenum,color=spancolor)
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        ax[n-1].axvspan(lastedgenum,thisedgenum,color=spancolor)
+        ax[m].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
         ax[n].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
-        ax[n-1].text((lastedgenum+thisedgenum)/2, regcr.max()*1.12, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
-#ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%H:%M'))
-ax[n].set_title('smoothed consumption rate')
+#ax[m].set_xlim(xlim)
+ax[m].xaxis.set_major_formatter(DateFormatter('%H:%M'))
+ax[m].set_title('smoothed consumption rate')
 ticklist = list(minimadatenums/86400)
 ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
-ax[n].xaxis.set_ticks(ticklist);
+ax[m].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
-        ax[n].axvline(minimadates[i],0,0.021,c='#0000FF',linestyle='dashed')
-        ax[n].axvline(minimadates[i],0,1,c='#aaaaFF',linestyle='dashed')
-        ax[n-1].axvline(minimadates[i],0,1,c='#0000FF',linestyle='dashed')
-        #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
+        ax[m].axvline(minimadates[i],0,0.021,c='#0000FF',linestyle='dashed')
+        ax[m].axvline(minimadates[i],0,1,c='#aaaaFF',linestyle='dashed')
+        ax[n].axvline(minimadates[i],0,1,c='#0000FF',linestyle='dashed')
+        #ax[m].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
-        ax[n].axvline(regdates[i]/86400,0,0.021,c='#0000FF', linestyle='dashed')
-        ax[n].axvline(regdates[i]/86400,0,1,c='#aaaaFF', linestyle='dashed')
-        ax[n-1].axvline(regdates[i]/86400,0,1,c='#0000FF', linestyle='dashed')
+        ax[m].axvline(regdates[i]/86400,0,0.021,c='#0000FF', linestyle='dashed')
+        ax[m].axvline(regdates[i]/86400,0,1,c='#aaaaFF', linestyle='dashed')
+        ax[n].axvline(regdates[i]/86400,0,1,c='#0000FF', linestyle='dashed')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
-        ax[n].axvline(regdates[-1]/86400,0,0.021,c='#0000FF', linestyle='dashed')
-        ax[n].axvline(regdates[-1]/86400,0,1,c='#aaaaFF', linestyle='dashed')
-        ax[n-1].axvline(regdates[-1]/86400,0,1,c='#0000FF', linestyle='dashed')
+        ax[m].axvline(regdates[-1]/86400,0,0.021,c='#0000FF', linestyle='dashed')
+        ax[m].axvline(regdates[-1]/86400,0,1,c='#aaaaFF', linestyle='dashed')
+        ax[n].axvline(regdates[-1]/86400,0,1,c='#0000FF', linestyle='dashed')
         lefti  = 0
         righti = minimaraw[i]
     else:
@@ -227,60 +224,20 @@ for i in range(len(minimaraw)+1):
     val = val * 7.48
     if maxcr < regcr.max()*0.02:
         maxcr =regcr.max()*0.02
-    plt.text(
+    ax[m].text(
             #(regdates[lefti]+regdates[righti])/2/86400,
             plotdate,
             maxcr,f"{val:.0f}", ha='center',va='bottom', color='#0000FF', fontsize=9)
 
-ax[n].fill_between(regdatedates[:-1],regcr)
+ax[m].fill_between(regdatedates[:-1],regcr)
 
-labels=ax[n].get_xticklabels()
+labels=ax[m].get_xticklabels()
 for lbl in labels:
     lbl.set_rotation(70)
     lbl.set_rotation_mode('anchor')
     lbl.set_va('center')
     lbl.set_ha('right')
     lbl.set_fontsize(8)
-
-'''
-n+=1
-filt_noise = np.logical_not( np.isnan(pdf.noise))
-ax[n].plot(dates[filt_noise],pdf.noise[filt_noise],'.-',label="noise")
-ax[n].plot(dates[filt_noise],pdf.rssi[filt_noise],'.-',label="signal")
-ax[n].plot(dates[filt_noise],pdf.rssi[filt_noise]-pdf.noise[filt_noise],'.-',label="SNR")
-ax[n].legend()
-ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-'''
-'''
-n+=1
-filt_freq1 = np.logical_not(np.isnan(pdf.freq1))
-ax[n].plot(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100,'.--',label="freq1")
-ax[n].plot(dates[filt_freq1],(pdf.freq2[filt_freq1]-434)*100,'.--',label="freq2")
-ax[n].fill_between(dates[filt_freq1],(pdf.freq1[filt_freq1]-434)*100, (pdf.freq2[filt_freq1]-434)*100,alpha=0.2)
-ax[n].legend(loc='upper left')
-ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-'''
-'''
-n+=1
-filt_tempC = np.logical_and(np.logical_not(np.isnan(pdf.temperature_C)),pdf.temperature_C < 80)
-ax[n].plot(dates[filt_tempC],pdf.temperature_C[filt_tempC],'.-',label="temp °C")
-ax[n].legend()
-ax[n].set_xlim(xlim)
-ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-'''
-'''
-n+=1
-
-filt_truck = pdf.protocol==201
-ax[n].hist(np.concatenate((pdf.freq-434,pdf.freq1-434,pdf.freq2-434)),50)
-#ax[n].legend()
-#ax[n].set_xlim(xlim)
-#ax[n].xaxis.set_major_formatter(DateFormatter('%a %Hh'))
-'''
-
-
 
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
