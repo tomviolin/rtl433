@@ -55,7 +55,7 @@ print(mostrecentdate)
 
 # filter only records that have valid 'id' field (not Nan)
 #ids=pdf.id
-goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] >= (mostrecentdate - 60*60*24*7))
+goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] > (mostrecentdate - 60*60*24*6))
 pdf = pdf[goodid]
 pdf['newid'] = [str(x) for x in pdf.id]
 
