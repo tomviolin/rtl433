@@ -179,7 +179,7 @@ for di in range(1,len(regdates)+1):
             spancolor='#ffffff'
             lbl = "AM"
         ax[n].axvspan(lastedgenum,thisedgenum,color=spancolor)
-        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*1.05, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
+        plt.text((lastedgenum+thisedgenum)/2, regcr.max()*1.12, DateFormatter('%a\n%m/%d')(lastedgenum).upper()+"\n"+lbl,ha='center')
         lastedgenum = thisedgenum
         lastedgefmt = thisedgefmt
 
@@ -191,15 +191,15 @@ ticklist = [ regdates[0]/86400 ] + ticklist + [ regdates[-1]/86400 ]
 ax[n].xaxis.set_ticks(ticklist);
 for i in range(len(minimaraw)+1):
     if i < len(minimaraw):
-        ax[n].axvline(minimadates[i],0,0.1,c='#0000FF',linestyle='dashed')
+        ax[n].axvline(minimadates[i],0,0.031,c='#0000FF',linestyle='dashed')
         #ax[n].plot(minimadates[i],minimacf[i],'.',ms=5,color='black')
 
     if i == len(minimaraw):
-        ax[n].axvline(regdates[i]/86400,0,0.1,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[i]/86400,0,0.031,c='#0000FF', linestyle='dashed')
         lefti = minimaraw[i-1]
         righti = len(sregy)-1
     elif i == 0:
-        ax[n].axvline(regdates[-1]/86400,0,0.1,c='#0000FF', linestyle='dashed')
+        ax[n].axvline(regdates[-1]/86400,0,0.031,c='#0000FF', linestyle='dashed')
         lefti  = 0
         righti = minimaraw[i]
     else:
@@ -207,8 +207,13 @@ for i in range(len(minimaraw)+1):
         righti = minimaraw[i]
     val = sregy[righti]-sregy[lefti]
     maxcr = regcr[lefti:righti].max()
+    maxi = np.where(regcr[lefti:righti]==maxcr)[0]
+    maxdate = regdates[lefti+maxi]/86400
     val = val * 7.48
-    plt.text((regdates[lefti]+regdates[righti])/2/86400,maxcr,f" ---- {val:.2f}", ha='left',va='top', color='#0000FF', rotation=70, rotation_mode='anchor', fontsize=9)
+    plt.text(
+            #(regdates[lefti]+regdates[righti])/2/86400,
+            maxdate,
+            maxcr,f"{val:.2f}", ha='center',va='bottom', color='#0000FF', fontsize=9)
 
 ax[n].fill_between(regdatedates[:-1],regcr)
 
@@ -217,6 +222,7 @@ for lbl in labels:
     lbl.set_rotation(70)
     lbl.set_rotation_mode('anchor')
     lbl.set_va('center')
+    lbl.set_ha('right')
     lbl.set_fontsize(8)
 
 '''
