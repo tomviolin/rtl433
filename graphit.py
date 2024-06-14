@@ -55,7 +55,7 @@ print(mostrecentdate)
 
 # filter only records that have valid 'id' field (not Nan)
 #ids=pdf.id
-goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] > (mostrecentdate - 60*60*24*6))
+goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] > (mostrecentdate - 60*60*24*7))
 pdf = pdf[goodid]
 pdf['newid'] = [str(x) for x in pdf.id]
 
@@ -228,10 +228,9 @@ for i in range(len(minimaraw)+1):
     ax[m].text(
             #(regdates[lefti]+regdates[righti])/2/86400,
             plotdate,
-            maxcr,f"{val:.0f}", ha='center',va='bottom', color='#0000FF', fontsize=9)
+            maxcr*7.48,f"{val:.0f}", ha='center',va='bottom', color='#0000FF', fontsize=9, label='peaks')
 
-ax[m].fill_between(regdatedates[:-1],regcr*7.48)
-
+ax[m].fill_between(regdatedates[:-1],regcr*7.48, color='#6688aa')
 labels=ax[n].get_xticklabels()
 for lbl in labels:
     lbl.set_rotation(70)
