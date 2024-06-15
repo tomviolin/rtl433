@@ -1,0 +1,1 @@
+{"time" : "2024-06-15 13:57:36", "protocol" : 154, "model" : "SCMplus", "id" : 71627342, "ProtocolID" : "0x1E", "EndpointType" : "0xAB", "EndpointID" : 71627342, "Consumption" : 70073, "Tamper" : "0x4800", "PacketCRC" : "0xC561", "MeterType" : "Water", "mic" : "CRC", "mod" : "ASK", "freq" : 915.255, "rssi" : -0.106, "snr" : 42.038, "noise" : -42.144}
