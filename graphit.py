@@ -18,6 +18,11 @@ from glob2 import glob
 
 from scipy.signal import savgol_filter
 from scipy.interpolate import CubicHermiteSpline, Akima1DInterpolator, PchipInterpolator
+
+DAYSBACK=7
+if len(sys.argv)>1:
+    DAYSBACK=int(sys.argv[1])
+
 mpl.rcParams['timezone']='America/Chicago'
 
 lld=[]
@@ -55,7 +60,7 @@ print(mostrecentdate)
 
 # filter only records that have valid 'id' field (not Nan)
 #ids=pdf.id
-goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] > (mostrecentdate - 60*60*24*7))
+goodid= (~(pd.isna(pdf.id))) &  (~(pd.isna(pdf.Consumption))) & (pdf['timestamp'] > (mostrecentdate - 60*60*24*DAYSBACK))
 pdf = pdf[goodid]
 pdf['newid'] = [str(x) for x in pdf.id]
 
@@ -246,7 +251,9 @@ yticks = ax[n].get_yticks()
 for ytick in yticks:
     ax[n].axhline(ytick)
 print(yticks)
-
+db = ""
+if DAYSBACK != 7:
+    db=f"-{DAYSBACK}"
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
-os.rename(f'/var/www/html/waterusage/chart{tstamp}.png','/var/www/html/waterusage/waterusage.png')
+os.rename(f'/var/www/html/waterusage/chart{tstamp}.png',f'/var/www/html/waterusage/waterusage{db}.png')
