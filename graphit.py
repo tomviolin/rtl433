@@ -251,9 +251,7 @@ yticks = ax[n].get_yticks()
 for ytick in yticks:
     ax[n].axhline(ytick)
 print(yticks)
-db = ""
-if DAYSBACK != 7:
-    db=f"-{DAYSBACK}"
+db=f"-{DAYSBACK}"
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
 os.rename(f'/var/www/html/waterusage/chart{tstamp}.png',f'/var/www/html/waterusage/waterusage{db}.png')
