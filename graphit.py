@@ -72,7 +72,7 @@ mpl.rcParams['lines.linewidth']=1
 mpl.rcParams['lines.markersize']=1.5
 
 plt.plot(pdf.freq,pdf.rssi,'.')
-plt.savefig('freq_vs_rssi.png')
+plt.savefig(f'freq_vs_rssi_{DAYSBACK}.png')
 plt.close('all')
 #timestamps = np.int64([ datetime.datetime.timestamp(dateutil.parser.parse(ts)) for ts in pdf.time ])
 
