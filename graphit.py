@@ -255,3 +255,6 @@ db=f"-{DAYSBACK}"
 tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
 os.rename(f'/var/www/html/waterusage/chart{tstamp}.png',f'/var/www/html/waterusage/waterusage{db}.png')
+
+k = sqldf("SELECT HOUR(timestamp), SUM(Consumption) from pdf group by HOUR(timestamp)")
+
