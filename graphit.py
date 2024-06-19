@@ -52,20 +52,23 @@ allpdf = pd.DataFrame(lld)
 
 allpdf['timestamp'] = [ mpd.dateutil.parser.parse(x).timestamp() for x in list(allpdf['time']) ]
 
-allpdf['diffcomp'] = allpdf['Consumption'].diff()
-
-hourlyrates = sqldf("select substr(time,12,2) as hour, sum(diffcomp) as usage from allpdf order by hour group by hour")
-
-# select dates within 1 week
-
-mostrecentdate =mpd.dateutil.parser.parse(list(allpdf['time'])[-1]).timestamp()
-print(mostrecentdate)
-
 
 # filter only records that have valid 'id' field (not Nan)
 #ids=pdf.id
-goodid= (~(pd.isna(allpdf.id))) &  (~(pd.isna(allpdf.Consumption))) & (allpdf['timestamp'] > (mostrecentdate - 60*60*24*DAYSBACK))
-pdf = allpdf[goodid]
+goodid= (~(pd.isna(allpdf.id))) &  (~(pd.isna(allpdf.Consumption)))
+
+goodpdf = allpdf[goodid]
+goodpdf.sort_values('timestamp')
+goodpdf['diffcomp'] = goodpdf['Consumption'].diff()+0
+hourlyrates = sqldf("select substr(time,12,2) as hour, sum(diffcomp) as usage from goodpdf group by hour order by hour")
+
+
+# select dates within 1 week
+mostrecentdate =mpd.dateutil.parser.parse(list(goodpdf['time'])[-1]).timestamp()
+
+inrange = (goodpdf['timestamp'] > (mostrecentdate - 60*60*24*DAYSBACK))
+pdf = goodpdf[inrange]
+
 pdf['newid'] = [str(x) for x in pdf.id]
 
 # idenitfy the ID with the most data, that'd be us.
@@ -260,5 +263,4 @@ tstamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 plt.savefig(f"/var/www/html/waterusage/chart{tstamp}.png")
 os.rename(f'/var/www/html/waterusage/chart{tstamp}.png',f'/var/www/html/waterusage/waterusage{db}.png')
 
-k = sqldf("SELECT HOUR(timestamp), SUM(Consumption) from pdf group by HOUR(timestamp)")
 
