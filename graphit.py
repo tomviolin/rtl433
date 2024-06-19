@@ -58,6 +58,7 @@ allpdf['timestamp'] = [ mpd.dateutil.parser.parse(x).timestamp() for x in list(a
 goodid= (~(pd.isna(allpdf.id))) &  (~(pd.isna(allpdf.Consumption)))
 
 goodpdf = allpdf[goodid]
+goodpdf.sort_values('Consumption')
 goodpdf.sort_values('timestamp')
 goodpdf['diffcomp'] = goodpdf['Consumption'].diff()+0
 hourlyrates = sqldf("select substr(time,12,2) as hour, sum(diffcomp) as usage from goodpdf group by hour order by hour")
